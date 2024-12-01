@@ -23,6 +23,10 @@ class HTMLNode():
         return res
 
 
+    def get_tag_pure(self):
+        return self.__tag
+
+
     def get_tag_open(self):
         return f"<{self.__tag}{self.props_to_html()}>"
 
@@ -33,3 +37,7 @@ class HTMLNode():
 
     def get_value(self):
         return self.__value
+
+
+    def get_children(self):
+        return self.__children
