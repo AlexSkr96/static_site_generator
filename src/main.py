@@ -25,5 +25,26 @@ def text_node_to_html_node(text_node):
             raise ValueError("Invalid text type!")
 
 
+def split_nodes_delimiter(old_nodes, delimiter, text_type):
+    res = []
+    for node in old_nodes:
+        text = node.get_text() + delimiter
+        node_start = 0
+        new_text_type = text_type
+        delimiter_ind = 0
+
+        while delimiter_ind != -1:
+            delimiter_ind = text.find(delimiter, node_start)
+            node_text = text[node_start:delimiter_ind]
+            node_start = delimiter_ind + len(delimiter)
+            new_text_type = text_type if new_text_type != text_type else TextType.TEXT
+            if len(node_text) == 0:
+                continue
+
+            res.append(TextNode(node_text, new_text_type))
+
+    return res
+
+
 if __name__ == "__main__":
     main()

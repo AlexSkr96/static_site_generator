@@ -1,7 +1,7 @@
 import unittest
 
 from leafnode import LeafNode
-from main import text_node_to_html_node
+from main import split_nodes_delimiter, text_node_to_html_node
 from textnode import TextNode, TextType
 
 
@@ -39,3 +39,39 @@ class TestMain(unittest.TestCase):
             "alt": "Swedish flag"
         })
         self.assertEqual(test_html_node, target_html_node)
+
+
+    def test_split_nodes_delimiter(self):
+        italic_node = TextNode("This is text *italic*, some more text", TextType.TEXT)
+        result = split_nodes_delimiter([italic_node], "*", TextType.ITALIC)
+        target = [
+            TextNode("This is text ", TextType.TEXT),
+            TextNode("italic", TextType.ITALIC),
+            TextNode(", some more text", TextType.TEXT)
+        ]
+        self.assertEqual(result, target)
+
+        # italic_node = TextNode("This is text \*italic*, some more text", TextType.TEXT)
+        # result = split_nodes_delimiter([italic_node], "*", TextType.ITALIC)
+        # target = [
+        #     TextNode("This is text \*italic", TextType.TEXT),
+        #     TextNode(", some more text", TextType.ITALIC)
+        # ]
+        # self.assertEqual(result, target)
+
+        italic_node = TextNode("*italic*, This is text, some more text", TextType.TEXT)
+        result = split_nodes_delimiter([italic_node], "*", TextType.ITALIC)
+        target = [
+            TextNode("italic", TextType.ITALIC),
+            TextNode(", This is text, some more text", TextType.TEXT)
+        ]
+        self.assertEqual(result, target)
+
+        bold_node = TextNode("This is text **bold**, some more text", TextType.TEXT)
+        result = split_nodes_delimiter([bold_node], "**", TextType.BOLD)
+        target = [
+            TextNode("This is text ", TextType.TEXT),
+            TextNode("bold", TextType.BOLD),
+            TextNode(", some more text", TextType.TEXT)
+        ]
+        self.assertEqual(result, target)
