@@ -22,3 +22,13 @@ class TestParentNode(unittest.TestCase):
         sub_parent_node = ParentNode(tag="d", children=[leaf_node2])
         test_node = ParentNode(tag="p", children=[leaf_node1, sub_parent_node])
         self.assertEqual(test_node.to_html(), "<p><d>Child_node1</d><d><d href=https://duckduckgo.com>Child link node</d></d></p>")
+
+        test_node = ParentNode(tag="p", children=[leaf_node1, sub_parent_node])
+        print(test_node.to_html())
+        target_html = "<p>\n"
+        target_html += "\t<d>Child_node1</d>\n"
+        target_html += "\t<d>\n"
+        target_html += "\t\t<d href=https://duckduckgo.com>Child link node</d>\n"
+        target_html += "\t</d>\n"
+        target_html += "</p>"
+        self.assertEqual(test_node.to_html(pretty=True), target_html)
