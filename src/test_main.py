@@ -1,7 +1,7 @@
 import unittest
 
 from leafnode import LeafNode
-from main import split_nodes_delimiter, text_node_to_html_node
+from main import extract_markdown_links, extract_markdown_images, split_nodes_delimiter, text_node_to_html_node
 from textnode import TextNode, TextType
 
 
@@ -75,3 +75,33 @@ class TestMain(unittest.TestCase):
             TextNode(", some more text", TextType.TEXT)
         ]
         self.assertEqual(result, target)
+
+
+    def test_extract_markdown_images(self):
+        text = "This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)"
+        images = extract_markdown_images(text)
+        target = [
+            ("rick roll", "https://i.imgur.com/aKaOqIh.gif"),
+            ("obi wan", "https://i.imgur.com/fJRm4Vk.jpeg")
+        ]
+        self.assertEqual(images, target)
+
+        text = "This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)"
+        images = extract_markdown_images(text)
+        target = []
+        self.assertEqual(images, target)
+
+
+    def test_extract_markdown_links(self):
+        text = "This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)"
+        images = extract_markdown_links(text)
+        target = [
+            ("to boot dev", "https://www.boot.dev"),
+            ("to youtube", "https://www.youtube.com/@bootdotdev")
+        ]
+        self.assertEqual(images, target)
+
+        text = "This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)"
+        images = extract_markdown_links(text)
+        target = []
+        self.assertEqual(images, target)
