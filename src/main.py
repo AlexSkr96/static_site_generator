@@ -74,5 +74,50 @@ def extract_markdown_links(text):
     return res
 
 
+def split_nodes_image(old_nodes):
+    res = []
+    for node in old_nodes:
+        text = node.get_text()
+        image_links = extract_markdown_images(node.get_text())
+        if not image_links:
+            res.append(node)
+            continue
+
+        for link in image_links:
+            link_text = f"![{link[0]}]({link[1]})"
+            text_split = text.split(link_text)
+            res.append(TextNode(text_split[0], TextType.TEXT))
+            res.append(TextNode(link[0], TextType.IMAGE, link[1]))
+            text = text_split[1]
+
+    return res
+
+
+def split_nodes_link(old_nodes):
+    res = []
+    for node in old_nodes:
+        text = node.get_text()
+        links = extract_markdown_links(node.get_text())
+        if not links:
+            res.append(node)
+            continue
+
+        for link in links:
+            link_text = f"[{link[0]}]({link[1]})"
+            text_split = text.split(link_text)
+
+            if text_split[0][-1] == "!":
+                if links[-1] == link:
+                    res.append(TextNode(text, TextType.TEXT))
+                else:
+                    continue
+            else:
+                res.append(TextNode(text_split[0], TextType.TEXT))
+                res.append(TextNode(link[0], TextType.LINK, link[1]))
+                text = text_split[1]
+
+    return res
+
+
 if __name__ == "__main__":
     main()
