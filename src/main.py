@@ -4,8 +4,7 @@ from leafnode import LeafNode
 
 
 def main():
-    node = TextNode("This is a text node", TextType.BOLD, "https://www.boot.dev")
-    print(node)
+    pass
 
 
 def text_node_to_html_node(text_node):
@@ -29,6 +28,10 @@ def text_node_to_html_node(text_node):
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
     res = []
     for node in old_nodes:
+        if node.get_text_type() != TextType.TEXT:
+            res.append(node)
+            continue
+
         text = node.get_text() + delimiter
         node_start = 0
         new_text_type = text_type
@@ -38,7 +41,7 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
             delimiter_ind = text.find(delimiter, node_start)
             node_text = text[node_start:delimiter_ind]
             node_start = delimiter_ind + len(delimiter)
-            new_text_type = text_type if new_text_type != text_type else TextType.TEXT
+            new_text_type = text_type if new_text_type != text_type else node.get_text_type()
             if len(node_text) == 0:
                 continue
 
@@ -90,6 +93,9 @@ def split_nodes_image(old_nodes):
             res.append(TextNode(link[0], TextType.IMAGE, link[1]))
             text = text_split[1]
 
+        if len(text) > 0:
+            res.append(TextNode(text, TextType.TEXT))
+
     return res
 
 
@@ -116,7 +122,21 @@ def split_nodes_link(old_nodes):
                 res.append(TextNode(link[0], TextType.LINK, link[1]))
                 text = text_split[1]
 
+        if len(text) > 0:
+            res.append(TextNode(text, TextType.TEXT))
+
     return res
+
+
+def text_to_textnodes(text):
+    nodes = [TextNode(text, TextType.TEXT)]
+    nodes = split_nodes_link(nodes)
+    nodes = split_nodes_image(nodes)
+    nodes = split_nodes_delimiter(nodes, "**", TextType.BOLD)
+    nodes = split_nodes_delimiter(nodes, "`", TextType.CODE)
+    nodes = split_nodes_delimiter(nodes, "*", TextType.ITALIC)
+    return nodes
+
 
 
 if __name__ == "__main__":
