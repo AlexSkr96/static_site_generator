@@ -138,6 +138,21 @@ def text_to_textnodes(text):
     return nodes
 
 
+def markdown_to_blocks(markdown):
+    blocks = []
+    markdown_list = markdown.strip().split("\n") + [""]
+    block = ""
+    for row in markdown_list:
+        row = row.strip()
+        if len(row) > 0:
+            block += f"{row}\n"
+        elif len(block) > 0:
+            blocks.append(block)
+            block = ""
+
+    return blocks
+
+
 
 if __name__ == "__main__":
     main()
