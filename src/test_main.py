@@ -1,7 +1,7 @@
 import unittest
 
 from leafnode import LeafNode
-from main import markdown_to_blocks, extract_markdown_links, extract_markdown_images, split_nodes_delimiter, split_nodes_image, split_nodes_link, text_node_to_html_node, text_to_textnodes
+from main import block_to_block_type, markdown_to_blocks, extract_markdown_links, extract_markdown_images, split_nodes_delimiter, split_nodes_image, split_nodes_link, text_node_to_html_node, text_to_textnodes
 from textnode import TextNode, TextType
 
 
@@ -240,3 +240,23 @@ class TestMain(unittest.TestCase):
                 "* This is another list item\n"
         ]
         self.assertEqual(blocks, target)
+
+
+    def test_block_to_block_type(self):
+        self.assertEqual(block_to_block_type("# This is a heading"), "heading")
+        self.assertEqual(block_to_block_type("## Another Level of Heading"), "heading")
+
+        self.assertEqual(block_to_block_type("```python\nprint('Hello, world!')\n```"), "code")
+        self.assertEqual(block_to_block_type("```python print('Hello, world!') ```"), "code")
+
+        block = "> This is a quoted line\n> And another one"
+        self.assertEqual(block_to_block_type(block), "quote")
+
+        block = "- Item 1\n- Item 2"
+        self.assertEqual(block_to_block_type(block), "unorderd")
+
+        block = "1. Item 1\n2. Item 2"
+        self.assertEqual(block_to_block_type(block), "orderd")
+
+        self.assertEqual(block_to_block_type("This is a normal piece of text"), "normal")
+        self.assertEqual(block_to_block_type("* This is an item in an unordered list *"), "unorderd")
