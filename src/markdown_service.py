@@ -1,4 +1,15 @@
+from enum import Enum
 import re
+
+
+class BlockType(Enum):
+    HEADING = "heading"
+    CODE = "code"
+    TEXT = "text"
+    QUOTE = "quote"
+    ORDERD = "orderd"
+    UNORDERD = "unorderd"
+
 
 
 def markdown_to_blocks(markdown):
@@ -18,26 +29,31 @@ def markdown_to_blocks(markdown):
 
 def block_to_block_type(block):
     if re.match(r"^#{1,6} ", block):
-        return "heading"
+        return BlockType.HEADING
     elif re.match(r"^```(.|\n)*```$", block) and "```" not in block[3:-3]:
-        return "code"
+        return BlockType.CODE
     elif re.match(r"^>", block):
         for line in block.split("\n")[1:]:
             if not re.match(r"^>", line):
-                return "normal"
+                return BlockType.TEXT
 
-        return "quote"
+        return BlockType.QUOTE
     elif re.match(r"^[\*-] ", block):
         for line in block.split("\n")[1:]:
             if not re.match(r"^[\*-] ", line):
-                return "normal"
+                return BlockType.TEXT
 
-        return "unorderd"
+        return BlockType.UNORDERD
     elif re.match(r"^[0-9]\. ", block):
         for line in block.split("\n")[1:]:
             if not re.match(r"^[0-9]\. ", line):
-                return "normal"
+                return BlockType.TEXT
 
-        return "orderd"
+        return BlockType.ORDERD
     else:
-        return "normal"
+        return BlockType.TEXT
+
+
+# def markdown_to_html_node(markdown):
+#     blocks = markdown_to_blocks(markdown)
+#     for block in blocks:
