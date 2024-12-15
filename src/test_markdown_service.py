@@ -50,7 +50,7 @@ class TestMarkdownService(unittest.TestCase):
         self.assertEqual(block_to_block_type("```python print('Hello, world!') ```"), BlockType.CODE)
 
         block = "> This is a quoted line\n> And another one"
-        self.assertEqual(block_to_block_type(block), BlockType.CODE)
+        self.assertEqual(block_to_block_type(block), BlockType.QUOTE)
 
         block = "- Item 1\n- Item 2"
         self.assertEqual(block_to_block_type(block), BlockType.UNORDERD)
