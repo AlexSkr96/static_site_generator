@@ -65,7 +65,7 @@ class TestMarkdownService(unittest.TestCase):
         self.assertEqual(block_to_block_type("* This is an item in an unordered list *"), BlockType.UNORDERED)
 
         block = "1. Landline telephone service. It is possible to connect multiple phone lines simultaneously.\n"
-        block += "2. Internet. Connections can be via telephone line (DSL\*, digital subscriber line) or fiber optic cable (*Fiber optic*)."
+        block += "2. Internet. Connections can be via telephone line (DSL*, digital subscriber line) or fiber optic cable (*Fiber optic*)."
         self.assertEqual(block_to_block_type(block), BlockType.ORDERED)
 
 
