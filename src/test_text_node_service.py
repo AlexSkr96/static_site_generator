@@ -211,3 +211,14 @@ class TestText(unittest.TestCase):
             TextNode("link", TextType.LINK, "https://boot.dev"),
         ]
         self.assertEqual(nodes, target)
+
+
+        text = "**I like Tolkien**. Read my [first post here](/majesty) (sorry the link doesn't work yet)"
+        nodes = text_to_textnodes(text)
+        target = [
+            TextNode("I like Tolkien", TextType.BOLD),
+            TextNode(". Read my ", TextType.TEXT),
+            TextNode("first post here", TextType.LINK, "/majesty"),
+            TextNode(" (sorry the link doesn't work yet)", TextType.TEXT)
+        ]
+        self.assertEqual(nodes, target)

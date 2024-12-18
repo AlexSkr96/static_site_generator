@@ -48,7 +48,7 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
 
 def extract_markdown_images(text):
     res = []
-    pattern = r"!\[[^\]]*?\]\(https?:\/\/.*?\)"
+    pattern = r"!\[[^\]]*?\]\(.*?\)"
     image_links = re.findall(pattern, text)
     for link in image_links:
         link_elements = link[2:-1].split("](")
@@ -61,7 +61,7 @@ def extract_markdown_images(text):
 
 def extract_markdown_links(text):
     res = []
-    pattern = r"[^!]\[[^\]]*?\]\(https?:\/\/.*?\)"
+    pattern = r"[^!]\[[^\]]*?\]\(.*?\)"
     # '" " + text' in case it starts with a link
     image_links = re.findall(pattern, " " + text)
     for link in image_links:

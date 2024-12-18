@@ -1,7 +1,7 @@
 import os
 import shutil
 
-from directory_service import copy_dir_contents, generate_page
+from directory_service import copy_dir_contents, generate_pages_recursive
 
 
 def main():
@@ -9,7 +9,7 @@ def main():
         shutil.rmtree("public")
 
     copy_dir_contents("static", "public")
-    generate_page("content/index.md", "template.html", "public/index.html")
+    generate_pages_recursive("content", "template.html", "public")
 
 if __name__ == "__main__":
     main()

@@ -2,7 +2,6 @@ from enum import Enum
 import re
 
 from parentnode import ParentNode
-from leafnode import LeafNode
 from xml.dom import NotFoundErr
 
 from text_node_service import text_node_to_html_node, text_to_textnodes
@@ -96,11 +95,11 @@ def markdown_to_html_node(markdown):
             html_block_nodes = list(map(text_node_to_html_node, text_nodes))
 
         elif block_type == BlockType.QUOTE:
-            tag = "blockqoute"
+            tag = "blockquote"
             for line in block.split("\n"):
                 node_text += f"{line[2:]}\n"
 
-            text_nodes = text_to_textnodes(node_text)
+            text_nodes = text_to_textnodes(node_text.strip())
             html_block_nodes = list(map(text_node_to_html_node, text_nodes))
 
         elif block_type == BlockType.ORDERED:

@@ -2,7 +2,6 @@ import os
 import shutil
 
 from markdown_service import extract_title, markdown_to_html_node
-import re
 
 
 def copy_dir_contents(source, destination):
@@ -46,3 +45,14 @@ def generate_page(from_path, template_path, dest_path):
     os.makedirs(os.path.dirname(dest_path), exist_ok = True)
     with open(dest_path, 'w') as file:
         file.write(template)
+
+
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+    for entry in os.listdir(dir_path_content):
+        content_entry = os.path.join(dir_path_content, entry)
+        # print(f"os.path.isfile({os.path.join(dir_path_content, entry)}): {os.path.isfile(os.path.join(dir_path_content, entry))}")
+        # print(f"{entry[-3:]} == \".md\": {entry[-3:] == ".md"}")
+        if os.path.isfile(content_entry) and content_entry[-3:] == ".md":
+            generate_page(content_entry, template_path, os.path.join(dest_dir_path, entry.replace("md", "html")))
+        elif os.path.isdir(content_entry):
+            generate_pages_recursive(content_entry, template_path, os.path.join(dest_dir_path, entry))
