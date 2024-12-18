@@ -7,7 +7,8 @@ class HTMLNode():
 
 
     def __repr__(self):
-        res = f"HTMLNode(<{self.__tag}>, {self.__value}, {len(self.__children)} children,\n {self.__props})"
+        tag = f"<{self.__tag}>" if self.__tag else None
+        res = f"HTMLNode({tag}, \"{self.__value}\", {len(self.__children)} children, {self.__props})"
         return res
 
     def __eq__(self, html_node):
@@ -37,11 +38,17 @@ class HTMLNode():
 
 
     def get_tag_open(self):
-        return f"<{self.__tag}{self.props_to_html()}>"
+        if self.__tag and len(self.__tag) > 0:
+            return f"<{self.__tag}{self.props_to_html()}>"
+        else:
+            return ""
 
 
     def get_tag_close(self):
-        return f"</{self.__tag}>"
+        if self.__tag and len(self.__tag) > 0:
+            return f"</{self.__tag}>"
+        else:
+            return ""
 
 
     def get_value(self):

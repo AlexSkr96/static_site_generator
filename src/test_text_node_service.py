@@ -91,20 +91,30 @@ class TestText(unittest.TestCase):
         target = []
         self.assertEqual(images, target)
 
+        text = "![final_provider.zip](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ac39c23b-718e-4cd6-bdaa-85b3a127a457/final_provider.zip)"
+        images = extract_markdown_images(text)
+        target = [("final_provider.zip", "https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ac39c23b-718e-4cd6-bdaa-85b3a127a457/final_provider.zip")]
+        self.assertEqual(images, target)
+
 
     def test_extract_markdown_links(self):
         text = "This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)"
-        images = extract_markdown_links(text)
+        links = extract_markdown_links(text)
         target = [
             ("to boot dev", "https://www.boot.dev"),
             ("to youtube", "https://www.youtube.com/@bootdotdev")
         ]
-        self.assertEqual(images, target)
+        self.assertEqual(links, target)
 
         text = "This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)"
-        images = extract_markdown_links(text)
+        links = extract_markdown_links(text)
         target = []
-        self.assertEqual(images, target)
+        self.assertEqual(links, target)
+
+        text = "[final_provider.zip](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ac39c23b-718e-4cd6-bdaa-85b3a127a457/final_provider.zip)"
+        links = extract_markdown_links(text)
+        target = [("final_provider.zip", "https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ac39c23b-718e-4cd6-bdaa-85b3a127a457/final_provider.zip")]
+        self.assertEqual(links, target)
 
 
     def test_split_nodes_link(self):

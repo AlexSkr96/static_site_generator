@@ -3,6 +3,9 @@ from htmlnode import HTMLNode
 
 class ParentNode(HTMLNode):
     def __init__(self, tag, children, props = {}):
+        if not isinstance(children, list):
+            children = [children]
+
         super().__init__(tag=tag, children=children, props=props)
 
 

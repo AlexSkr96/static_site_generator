@@ -108,7 +108,7 @@ def split_nodes_link(old_nodes):
             link_text = f"[{link[0]}]({link[1]})"
             text_split = text.split(link_text)
 
-            if text_split[0][-1] == "!":
+            if len(text_split[0]) and text_split[0][-1] == "!":
                 if links[-1] == link:
                     res.append(TextNode(text, TextType.TEXT))
                 else:

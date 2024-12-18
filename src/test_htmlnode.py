@@ -22,7 +22,7 @@ class TestHTMLNode(unittest.TestCase):
                 "target": "_blank",
             }
         )
-        expected = """HTMLNode(<p>, Lorem ipsum, 2 children,\n {'href': 'https://www.google.com', 'target': '_blank'})"""
+        expected = """HTMLNode(<p>, \"Lorem ipsum\", 2 children, {'href': 'https://www.google.com', 'target': '_blank'})"""
         self.assertEqual(repr(node), expected)
 
 
